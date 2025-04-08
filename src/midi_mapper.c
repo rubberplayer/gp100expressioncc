@@ -156,7 +156,7 @@ void create_virtual_midi_device() {
         exit(EXIT_FAILURE);
     }
 
-    fprintf(stderr,"Virtual MIDI device created. Input source port: %d, Output port: %d\n", in_port, out_port);
+    // fprintf(stderr,"Virtual MIDI device created. Input source port: %d, Output port: %d\n", in_port, out_port);
 }
 
 void process_midi_events() {
@@ -207,7 +207,7 @@ int parse_arguments(int argc, char *argv[]) {
     output_control_channel = channel;
     output_control_param = param;
 
-    fprintf(stderr,"output control change param %d on channel %d\n", output_control_param, output_control_channel);
+    fprintf(stderr,"Outputs control change param %d on channel %d\n", output_control_param, output_control_channel);
     return 0;
 }
 
