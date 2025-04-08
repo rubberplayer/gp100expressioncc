@@ -101,10 +101,10 @@ bool map_event(snd_seq_event_t *ev) {
             uint64_t pedal_value = get_nibbles_uint64_value(bytes + data_offset);
             int value_index = find_recorded_value_index(pedal_value);
             if (value_index == -1){
-                //printf("Unknow position %" PRIx64 "\n",pedal_value);
+                fprintf(stderr,"Unknow position %" PRIx64 "\n",pedal_value);
             } else {
                 int controller_value = controller_0_127_value[value_index];
-                fprintf(stderr,"%" PRIx64 " -> %d -> %d \n",pedal_value,value_index,controller_value );
+                //fprintf(stderr,"%" PRIx64 " -> %d -> %d \n",pedal_value,value_index,controller_value );
                 send_control(seq_handle, out_port, output_control_channel, output_control_param, controller_value) ;
             }            
         }        
