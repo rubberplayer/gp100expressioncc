@@ -1,4 +1,4 @@
-# Valeton GP-100 multi-effect as a general midi controller
+# Valeton GP-100 multi-effect expression pedal as a general midi controller
 
 This multi-effect has an expression pedal. But it sends its value in a `MIDI sysex`.
 
@@ -8,7 +8,7 @@ Output is a control change with `param 15` on `channel 1`, customizable using th
 
 ## usage
 
-    ./gp100expression [--channel|-c N] [--param|-p N]
+    ./gp100expressioncc [--channel|-c N] [--param|-p N]
 
 ## compilation
 
