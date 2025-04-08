@@ -24,12 +24,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <inttypes.h>
 #include <getopt.h>
+#include "autoconnect.h"
 
 snd_seq_t *seq_handle;
 int in_port, out_port;
 
 int output_control_channel;
 int output_control_param;
+bool do_autoconnect_input;
 
 #define RECORDED_PEDAL_VALUES_LENGTH 31
 uint64_t recorded_pedal_values[] = {
@@ -174,19 +176,21 @@ void process_midi_events() {
 
 
 int parse_arguments(int argc, char *argv[]) {
-    int channel = 0;    // default
-    int param = 15;     // default
+    int channel = 0;    
+    int param = 15;     
+    bool autoconnect = false;
 
     // Option structure for getopt_long
     static struct option long_options[] = {
         {"channel", required_argument, 0, 'c'},
         {"param",   required_argument, 0, 'p'},
+        {"autoconnect", no_argument,       0, 'a'},  
         {"help",    no_argument,       0, 'h'},  
         {0, 0, 0, 0}  // Termination entry
     };
 
     int opt;
-    while ((opt = getopt_long(argc, argv, "c:p:", long_options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "c:p:ah", long_options, NULL)) != -1) {
         switch (opt) {
             case 'c':
                 channel = atoi(optarg);
@@ -194,18 +198,22 @@ int parse_arguments(int argc, char *argv[]) {
             case 'p':
                 param = atoi(optarg);
                 break;
+            case 'a':
+                autoconnect = true;
+                break;
             case '?':
                 // getopt_long already printed an error message
                 return 1;
             case 'h':
             default:
-                fprintf(stderr, "Usage: %s [--channel|-c N] [--param|-p N]\n", argv[0]);
+                fprintf(stderr, "Usage: %s [--channel|-c N] [--param|-p N] [--autoconnect|-a]\n", argv[0]);
                 return 1;
         }
     }
 
     output_control_channel = channel;
     output_control_param = param;
+    do_autoconnect_input = autoconnect;
 
     fprintf(stderr,"Outputs control change param %d on channel %d\n", output_control_param, output_control_channel);
     return 0;
@@ -217,6 +225,9 @@ int main(int argc, char *argv[]) {
     }
     fill_controller_values_array(controller_0_127_value, 0,127,RECORDED_PEDAL_VALUES_LENGTH );
     create_virtual_midi_device();
+    if (do_autoconnect_input){
+        auto_connect(seq_handle,in_port);
+    }
     fprintf(stderr,"Listening for MIDI events...\n");
     process_midi_events();
     snd_seq_close(seq_handle);

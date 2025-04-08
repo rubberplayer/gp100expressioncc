@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -O2
 LDFLAGS = -lasound
 
 TARGET = gp100expressioncc
-SRC = src/midi_mapper.c src/send_event.c
+SRC = src/midi_mapper.c src/send_event.c src/autoconnect.c
 
 all: $(TARGET)
 

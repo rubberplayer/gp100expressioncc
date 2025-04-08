@@ -8,7 +8,12 @@ Output is a control change with `param 15` on `channel 1`, customizable using th
 
 ## usage
 
-    ./gp100expressioncc [--channel|-c N] [--param|-p N]
+    ./gp100expressioncc \
+        [--channel|-c N] \
+        [--param|-p N] \
+        [--autoconnect|-a] \
+
+`autoconnect` tries to connect the expression pedal to gp100expressioncc input using the device name.
 
 ## compilation
 
